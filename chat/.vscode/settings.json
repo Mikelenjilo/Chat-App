@@ -1,0 +1,23 @@
+{
+  "files.exclude": {
+    ".dart_tool": true,
+    ".idea": true,
+    ".vscode": true,
+    ".gitignore": true,
+    "*.metadata": true,
+    "*.metadata.*": true,
+    ":\\Home\\Work\\projects\\chat_app/.dart_tool": true,
+    ":\\Home\\Work\\projects\\chat_app/.git": true,
+    ":\\Home\\Work\\projects\\chat_app/.gitignore": true,
+    ":\\Home\\Work\\projects\\chat_app/.idea": true,
+    ":\\Home\\Work\\projects\\chat_app/.metadata": true,
+    ":\\Home\\Work\\projects\\chat_app/analysis_options.yaml": true,
+    ":\\Home\\Work\\projects\\chat_app/README.md": true,
+    "CHANGELOG.md": true,
+    "analysis_options.yaml": true,
+    "chat.iml": true,
+    "LICENSE": true,
+    "README.md": true,
+    "test\\chat_test.dart": true
+  }
+}
