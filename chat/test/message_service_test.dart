@@ -1,6 +1,8 @@
 import 'package:chat/src/models/message.dart';
 import 'package:chat/src/models/user.dart';
-import 'package:chat/src/services/message_service_impl.dart';
+import 'package:chat/src/services/encryption/encryption_service_impl.dart';
+import 'package:chat/src/services/messages/message_service_impl.dart';
+import 'package:encrypt/encrypt.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rethink_db_ns/rethink_db_ns.dart';
 
@@ -15,7 +17,8 @@ void main() {
     connection = await r.connect(host: '127.0.0.1', port: 28015);
     await createDatabase(r: r, connection: connection, databaseName: 'test');
     await createTable(r: r, connection: connection, tableName: 'messages');
-    sut = MessageService(r, connection);
+    final encryption = EncryptionService(Encrypter(AES(Key.fromLength(32))));
+    sut = MessageService(r, connection, encryption);
   });
 
   tearDown(() async {
@@ -47,14 +50,16 @@ void main() {
       content: 'this is a message',
     );
 
-    final res = await sut.isMessageSent(message);
+    final res = await sut.sendMessage(message);
     expect(res, true);
   });
 
-  test('successfully subscribe and messages', () async {
+  test('successfully subscribe and receive messages', () async {
+    const contents = 'this is a message';
     sut.getMessages(user2).listen(expectAsync1((message) {
           expect(message.to, user2.id);
           expect(message.id, isNotEmpty);
+          expect(message.content, contents);
         }, count: 2));
 
     Message message1 = Message(
@@ -71,9 +76,9 @@ void main() {
       content: 'this is a message',
     );
 
-    await sut.isMessageSent(message1);
+    await sut.sendMessage(message1);
 
-    await sut.isMessageSent(message2);
+    await sut.sendMessage(message2);
   });
 
   test('successfully subscribe and receive new messages', () async {
@@ -91,8 +96,8 @@ void main() {
       content: 'this is a message',
     );
 
-    await sut.isMessageSent(message1);
-    await sut.isMessageSent(message2).whenComplete(
+    await sut.sendMessage(message1);
+    await sut.sendMessage(message2).whenComplete(
           () => sut.getMessages(user2).listen(
                 expectAsync1((message) {
                   expect(message.id, isNotEmpty);
