@@ -28,12 +28,9 @@ Future<void> createTable({
   }
 }
 
-Future<void> cleanDatabase(RethinkDb r, Connection connection) async {
-  await r
-      .table(AppConstants.tableUsers)
-      .delete()
-      .run(connection)
-      .catchError((err) => {});
+Future<void> cleanTable(
+    RethinkDb r, Connection connection, String tableName) async {
+  await r.table(tableName).delete().run(connection).catchError((err) => {});
   await r
       .table(AppConstants.tableMessages)
       .delete()

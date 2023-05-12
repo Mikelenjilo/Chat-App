@@ -25,13 +25,13 @@ class MessageService implements IMessageService {
   }
 
   @override
-  Stream<Message> getMessages(User activeUser) {
+  Stream<Message> messages(User activeUser) {
     _startListening(activeUser);
     return _controller.stream;
   }
 
   @override
-  Future<bool> sendMessage(Message message) async {
+  Future<bool> send(Message message) async {
     var data = message.toJson();
     data['content'] = _encryption.encrypt(message.content);
 
