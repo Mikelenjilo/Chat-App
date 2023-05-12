@@ -8,6 +8,7 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  encrypt: ^5.0.1
   flutter:
     sdk: flutter
   rethink_db_ns: ^0.0.4
@@ -16,5 +17,5 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-    
+
 flutter: null
