@@ -23,7 +23,7 @@ void main() {
 
   tearDown(() async {
     sut.dispose();
-    await cleanDatabase(r, connection);
+    await cleanTable(r, connection, 'messages');
   });
 
   final user1 = User.fromJson({
@@ -50,13 +50,13 @@ void main() {
       content: 'this is a message',
     );
 
-    final res = await sut.sendMessage(message);
+    final res = await sut.send(message);
     expect(res, true);
   });
 
   test('successfully subscribe and receive messages', () async {
     const contents = 'this is a message';
-    sut.getMessages(user2).listen(expectAsync1((message) {
+    sut.messages(user2).listen(expectAsync1((message) {
           expect(message.to, user2.id);
           expect(message.id, isNotEmpty);
           expect(message.content, contents);
@@ -76,9 +76,9 @@ void main() {
       content: 'this is a message',
     );
 
-    await sut.sendMessage(message1);
+    await sut.send(message1);
 
-    await sut.sendMessage(message2);
+    await sut.send(message2);
   });
 
   test('successfully subscribe and receive new messages', () async {
@@ -96,9 +96,9 @@ void main() {
       content: 'this is a message',
     );
 
-    await sut.sendMessage(message1);
-    await sut.sendMessage(message2).whenComplete(
-          () => sut.getMessages(user2).listen(
+    await sut.send(message1);
+    await sut.send(message2).whenComplete(
+          () => sut.messages(user2).listen(
                 expectAsync1((message) {
                   expect(message.id, isNotEmpty);
                 }, count: 2),
