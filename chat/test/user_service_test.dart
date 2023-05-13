@@ -1,3 +1,4 @@
+import 'package:chat/core/utils/constants.dart';
 import 'package:chat/src/models/user.dart';
 import 'package:chat/src/services/users/user_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,7 +13,8 @@ void main() {
 
   setUp(() async {
     connection = await r.connect(host: '127.0.0.1', port: 28015);
-    await createDatabase(r: r, connection: connection, databaseName: 'test');
+    await createDatabase(
+        r: r, connection: connection, databaseName: AppConstants.databaseName);
     await createTable(r: r, connection: connection, tableName: 'users');
     sut = UserService(r, connection);
   });

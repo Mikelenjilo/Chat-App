@@ -1,3 +1,4 @@
+import 'package:chat/core/utils/constants.dart';
 import 'package:chat/src/models/message.dart';
 import 'package:chat/src/models/user.dart';
 import 'package:chat/src/services/encryption/encryption_service_impl.dart';
@@ -15,7 +16,8 @@ void main() {
 
   setUp(() async {
     connection = await r.connect(host: '127.0.0.1', port: 28015);
-    await createDatabase(r: r, connection: connection, databaseName: 'test');
+    await createDatabase(
+        r: r, connection: connection, databaseName: AppConstants.databaseName);
     await createTable(r: r, connection: connection, tableName: 'messages');
     final encryption = EncryptionService(Encrypter(AES(Key.fromLength(32))));
     sut = MessageService(r, connection, encryption);

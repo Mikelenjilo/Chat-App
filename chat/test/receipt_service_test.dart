@@ -1,3 +1,4 @@
+import 'package:chat/core/utils/constants.dart';
 import 'package:chat/src/models/receipt.dart';
 import 'package:chat/src/models/user.dart';
 import 'package:chat/src/services/receipt/receipts_service_impl.dart';
@@ -13,14 +14,19 @@ void main() {
 
   setUp(() async {
     connection = await r.connect(host: '127.0.0.1', port: 28015);
-    await createDatabase(r: r, connection: connection, databaseName: 'test');
-    await createTable(r: r, connection: connection, tableName: 'receipts');
+    await createDatabase(
+        r: r, connection: connection, databaseName: AppConstants.databaseName);
+    await createTable(
+        r: r,
+        connection: connection,
+        tableName: AppConstants.tableTypingEvents);
+
     sut = ReceiptService(r, connection);
   });
 
   tearDown(() async {
     sut.dispose();
-    await cleanTable(r, connection, 'receipts');
+    await cleanTable(r, connection, AppConstants.tableReceipts);
   });
 
   final user = User.fromJson(
@@ -45,7 +51,6 @@ void main() {
     expect(res, true);
   });
 
-// TODO: Fix this test
   test(
     'successfully subscribe and receive receipts',
     () async {
