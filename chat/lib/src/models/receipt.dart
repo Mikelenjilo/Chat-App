@@ -40,7 +40,7 @@ class Receipt {
       recipient: json['recipient'],
       messageId: json['messageId'],
       status: EnumParsing.fromString(json['status']),
-      timestamp: json['timestamp'],
+      timestamp: DateTime.parse(json['timestamp']),
     );
     receipt._id = json['id'];
     return receipt;
